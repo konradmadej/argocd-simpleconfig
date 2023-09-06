@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1beta1
+kind: Application
+metadata:
+  name: guestbook
+  namespace: argocd
+spec:
+  destination:
+    name: in-cluster
+    namespace: dev
+    server: https://kubernetes.default.svc
+  source:
+    path: 'simple-app/overlays/dev'
+    repoURL: git@github.com:konradmadej/argocd-simpleconfig.git
+    targetRevision: main
+  project: default
