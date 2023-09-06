@@ -4,5 +4,5 @@ kind: Kustomization
 namePrefix: kustomize-
 
 resources:
-- guestbook-ui-deployment.yaml
-- guestbook-ui-svc.yaml
+- deployment.yaml
+- service.yaml
