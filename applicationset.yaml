@@ -1,7 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: simpleapp
+  name: simpleapp-set
+  namespace: argocd
 spec:
   generators:
   - list:
@@ -9,9 +10,15 @@ spec:
       - name: dev
         namespace: doc-dev
         cluster: in-cluster
+        project: default
       - name: dev-rc
         namespace: doc-dev-rc
         cluster: in-cluster
+        project: default
+      - name: prod
+        namespace: doc-prod
+        cluster: in-cluster
+        project: production
   template:
     metadata:
       name: 'simpleapp-{{name}}'
