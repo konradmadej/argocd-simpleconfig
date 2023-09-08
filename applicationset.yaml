@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: simpleapp
+spec:
+  generators:
+  - list:
+      elements:
+      - name: dev
+        namespace: doc-dev
+        cluster: in-cluster
+      - name: dev-rc
+        namespace: doc-dev-rc
+        cluster: in-cluster
+  template:
+    metadata:
+      name: 'simpleapp-{{name}}'
+    spec:
+      project: default
+      source:
+        helm:
+          valueFiles:
+          - '../../../clusters/{{name}}/{{addonChart}}/values.yaml'
+        repoURL: git@github.com:konradmadej/argocd-simpleconfig.git
+        path: 'simple-app/overlays/{{name}}'
+        targetRevision: main
+      destination:
+        namespace: '{{namespace}}'
+        name: '{{cluster}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true # Big CRDs.
